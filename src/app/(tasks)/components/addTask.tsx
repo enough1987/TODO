@@ -1,6 +1,6 @@
 'use client'
 
-import { INITIAL_TASK, MIN_DATE, PRIORITIES } from "@/api/dictioneries";
+import { INITIAL_TASK, ITask, MIN_DATE, PRIORITIES } from "@/api/dictioneries";
 import { addTaskApi } from "@/api/tasks";
 import { startTransition, useActionState, useEffect } from "react";
 import FormButton from "../../../components/formButton";
@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 
 export function AddTask() {
   const setPendingGlocal = useStoreInContext((state) => state.setPendingGlocal);
-  const [state, formAction, pending] = useActionState(addTaskApi, { data: INITIAL_TASK, error: null });
+  const [state, formAction, pending] = useActionState(addTaskApi, { data: INITIAL_TASK as ITask, error: null });
 
   useEffect(() => {
     setPendingGlocal?.(pending);
@@ -24,7 +24,6 @@ export function AddTask() {
       e.preventDefault();
       setPendingGlocal?.(true);
       const data = new FormData(e.currentTarget);
-      console.log(data.get('due_date'))
       data.set('due_date', dayjs(data.get('due_date') as string).toISOString());
 
       startTransition(() => {

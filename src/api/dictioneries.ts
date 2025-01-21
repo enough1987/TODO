@@ -16,6 +16,12 @@ export interface ITask {
 
 export type OmitedITask = Omit<ITask, 'id' | 'completed' | 'created'>
 
+export interface ITaskState { 
+    resetKey?: string, 
+    data: ITask,
+    error: string | null
+}
+
 
 export const COMPLETNES = ['completed', 'pending']; 
 export const POST_EDIT_LIST_HEADERS = [
@@ -39,3 +45,4 @@ export const MIN_DATE = new Date();
 export const FORMAT = 'DD/MM/YYYY';
 
 export const INITIAL_TASK: OmitedITask = { name: '', due_date: null as unknown as Date, priority: PRIORITIES[0] };
+

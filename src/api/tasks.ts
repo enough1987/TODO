@@ -1,6 +1,6 @@
 'use server'
 import { revalidatePath } from "next/cache";
-import { BASE_API, INITIAL_TASK, ITask, OmitedITask } from "./dictioneries";
+import { BASE_API, INITIAL_TASK, ITask, ITaskState, OmitedITask } from "./dictioneries";
 import { v4 as uuidv4 } from 'uuid';
 import { ERROR_FEEDBACK_DATA, ERROR_INVALID_FORM_DATA, taskIdSchema, taskSchema } from "./validation";
 import { SafeParseReturnType } from "zod";
@@ -16,8 +16,7 @@ export async function getAllTasksApi () {
     return res;
 }
 
-export async function addTaskApi (prevState: { resetKey?: string, data: ITask, error: string }, formData: FormData): Promise<{resetKey?: string, data: ITask | null,  
-    error: string | null }> {
+export async function addTaskApi (prevState: ITaskState, formData: FormData): Promise<ITaskState> {
     // TODO: remove for prod
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
@@ -72,7 +71,7 @@ export async function addTaskApi (prevState: { resetKey?: string, data: ITask, e
     return { resetKey: uuidv4(), data: INITIAL_TASK as ITask, error: null };
 }
 
-export async function editTaskApi (prevState: { resetKey?: string, data: ITask, error: string }, formData: FormData): Promise<{ resetKey?: string, data: ITask | null, error: string | null }> {
+export async function editTaskApi (prevState: ITaskState, formData: FormData): Promise<ITaskState> {
     // TODO: remove for prod
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
