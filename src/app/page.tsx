@@ -7,13 +7,15 @@ import Box from "@mui/material/Box";
 export default function Home() {
   return (
     <Box className="flex flex-col">
-      <Box className="pt-10 pl-10"> 
+      <Box role="toolbar" className="pt-2 pl-10"> 
         <TaskCompleted />
         <FormFilters />
       </Box>
-      <Box className="w-full p-10 flex justify-between">
+      <Box 
+        role="main"
+        className="w-full p-10 flex justify-between">
         <TaskList />
-        <Box>
+        <Box role="aside">
           <AddTask />
         </Box>
       </Box>

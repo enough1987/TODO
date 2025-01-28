@@ -15,11 +15,14 @@ export function FormIcon({ children, label, disabled, onClick }: IProps) {
 
     return (
         <IconButton
+            role="button"
+            tabIndex={0}
             sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
             onClick={onClick}
             className="w-6 h-6 text-gray-800 dark:text-white disabled:opacity-50" 
             aria-label={label}
             disabled={!!pendingGlocal || disabled}
+            area-disabled={!!pendingGlocal || disabled || undefined}
             aria-hidden={!!pendingGlocal || disabled}
         >
             {children}

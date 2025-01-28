@@ -19,8 +19,10 @@ const FormInput = ({ sx, name, label, value, onChange }: IProps) => {
 
     return (
       <TextField
+          role='input'
           defaultValue={value || ""}
           disabled={!!pendingGlocal}
+          area-disabled={!!pendingGlocal || undefined}
                     id={name || label}
                     name={name || label}
                     label={capitalizeFirstLetter(label)}

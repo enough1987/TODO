@@ -10,7 +10,9 @@ export async function TaskList() {
 
     const listHeaders = <li
     className="w-full flex items-center justify-between">
-        <Box className="flex w-[800px] ml-[30px]">
+        <Box 
+          role="listheader"
+          className="flex w-[800px] ml-[30px]">
           { 
             POST_EDIT_LIST_HEADERS.map((item) => (<Box key={item.label} 
               sx={{ width: item.width }} 
@@ -23,7 +25,9 @@ export async function TaskList() {
 
     return (
       <ClickOutside>
-        <ul className="w-5/6 space-y-1 text-gray-500 list-inside dark:text-gray-400">
+        <ul 
+          role="list"
+          className="w-5/6 space-y-1 text-gray-500 list-inside dark:text-gray-400">
             {listHeaders}
             <ListItems items={data} />
         </ul>

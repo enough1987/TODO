@@ -8,7 +8,9 @@ export async function TaskCompleted() {
   
 
     return (
-      <p> { `tasks completed ${taskCompleted}/${tasks.length} `}</p>
+      <p
+        role="status"
+      > { `tasks completed ${taskCompleted}/${tasks.length} `}</p>
     );
   }
   

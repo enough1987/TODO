@@ -24,6 +24,7 @@ export function ListItems ({ items }: ListItemsProps) {
           ?.filter((item) => filter(filters, item ))
           .sort(sortByCreated).sort(sortByComleted)
           .map((item) => <li key={item.id}
+            role="listitem"
             className="w-full flex items-center justify-between">
         <Box className="flex items-center"
         sx={{ width: '16px' }}>

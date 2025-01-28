@@ -35,13 +35,16 @@ const FormSelect = ({ sx, name, label, value, defaultValue, options, onChange }:
             <InputLabel 
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
+                area-disabled={!!pendingGlocal || undefined}
                 id={label} 
                 size="small">
                     {capitalizeFirstLetter(label)}
             </InputLabel>
             <Select
+                role="select"
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
+                area-disabled={!!pendingGlocal || undefined}
                 {...props}
                 id={name || label}
                 name={name || label}

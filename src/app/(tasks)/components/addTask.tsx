@@ -31,6 +31,8 @@ export function AddTask() {
       });
   };
 
+  console.log('state', state);
+
   return (
     <form 
         key={state.resetKey}
@@ -38,6 +40,7 @@ export function AddTask() {
         action={formAction}
         onSubmit={onSubmit}
         aria-labelledby="add-task-form"
+        noValidate
     >
         <Typography component="h2" variant="h2" id="add-task-form" className="sr-only">Add Task Form</Typography>
         <Box className="mb-4">
@@ -52,10 +55,12 @@ export function AddTask() {
           />
         </Box>
         <Box className="mb-4">
-          <FormSelect label="priority" defaultValue={state?.data?.priority as string} options={PRIORITIES} />
+          <FormSelect 
+            label="priority" defaultValue={state?.data?.priority as string} options={PRIORITIES} />
         </Box>
         <Box>
-          <FormButton sx={{ width: '100%' }} label='Add task' type="submit" />
+          <FormButton 
+            sx={{ width: '100%' }} label='Add task' type="submit" />
         </Box>
     </form>
   );

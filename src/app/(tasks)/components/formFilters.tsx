@@ -15,6 +15,7 @@ export function  FormFilters () {
 
     return (
         <form
+            role="filter"
             className="flex items-baseline pt-2">
                 <FormInput 
                     label="name" 

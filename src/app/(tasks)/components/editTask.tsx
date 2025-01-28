@@ -44,6 +44,7 @@ export function EditTask({ task }: { task: ITask }) {
         onSubmit={onSubmit}
         className="flex w-[800px]" 
         aria-labelledby="edit-task-form"
+        noValidate
     >
         <Box   
             className="pl-2 pr-2"

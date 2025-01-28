@@ -26,8 +26,10 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
         () => ({
           textField: (params: TextFieldProps) => (
             <TextField
+                role="datepicker"
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
+                area-disabled={!!pendingGlocal || undefined}
                 id={name || label}
                 name={name || label}
                 label={capitalizeFirstLetter(label)}

@@ -17,11 +17,13 @@ const FormButton = ({ sx, label, type = 'button', onClick }: IProps) => {
 
     return (
       <Button 
+        role="button"
         sx={{ p: 0.8, width: '100%', 
           opacity: pendingGlocal ? 0.5 : 1,
           ...sx }}
         variant="outlined"
         disabled={!!pendingGlocal}
+        area-disabled={!!pendingGlocal || undefined}
         aria-busy={!!pendingGlocal}
         aria-label={label}
         type={type}
