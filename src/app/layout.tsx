@@ -16,10 +16,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   title: "TODO app",
   description: "TODO app with Next.js",
-  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
