@@ -42,7 +42,7 @@ export function EditTask({ task }: { task: ITask }) {
         key={state.resetKey}
         action={formAction}
         onSubmit={onSubmit}
-        className="flex w-[800px]" 
+        className="flex w-[50rem]" 
         aria-labelledby="edit-task-form"
         noValidate
     >
@@ -80,7 +80,7 @@ export function EditTask({ task }: { task: ITask }) {
         {
             editable?.[state.data?.id as string] && (
                 <Box sx={{
-                    width: '190px',
+                    width: '11.875rem',
                 }}
                 className="p-2">
                     <FormButton label='Save'type="submit" />

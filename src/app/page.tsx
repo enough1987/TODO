@@ -6,13 +6,15 @@ import Box from "@mui/material/Box";
 
 export default function Home() {
   return (
-    <Box className="flex flex-col">
+    <Box 
+      role="main"
+      className="flex flex-col">
       <Box role="toolbar" className="pt-2 pl-10"> 
         <TaskCompleted />
         <FormFilters />
       </Box>
       <Box 
-        role="main"
+        role="section"
         className="w-full p-10 flex justify-between">
         <TaskList />
         <Box role="aside">

@@ -12,7 +12,7 @@ export async function TaskList() {
     className="w-full flex items-center justify-between">
         <Box 
           role="listheader"
-          className="flex w-[800px] ml-[30px]">
+          className="flex w-[50rem] ml-[1.875rem]">
           { 
             POST_EDIT_LIST_HEADERS.map((item) => (<Box key={item.label} 
               sx={{ width: item.width }} 

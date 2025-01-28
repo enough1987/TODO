@@ -27,7 +27,7 @@ export function ListItems ({ items }: ListItemsProps) {
             role="listitem"
             className="w-full flex items-center justify-between">
         <Box className="flex items-center"
-        sx={{ width: '16px' }}>
+        sx={{ width: '1rem' }}>
           <CheckCircleOutlineOutlinedIcon 
               fontSize='small'
               color={item.completed ? 'success' : 'disabled'}
