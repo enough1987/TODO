@@ -5,8 +5,7 @@ import { EditTask } from './editTask';
 import { EditTaskIcon } from './editITaskIcon';
 import { CompleteTask } from './completed';
 import { DeleteTask } from './deleteTask';
-import { filter } from '../utils/filters';
-import { useStoreInContext } from '@/store/storeProvider';
+import { filter, useFilters } from '../utils/filters';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import Box from '@mui/material/Box';
 
@@ -18,7 +17,7 @@ interface ListItemsProps {
 }
 
 export function ListItems ({ items }: ListItemsProps) {
-    const filters = useStoreInContext((state) => state.filters);
+    const [filters] = useFilters();
     
     const listItems = items
           ?.filter((item) => filter(filters, item ))

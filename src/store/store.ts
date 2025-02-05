@@ -2,21 +2,6 @@ import { IUser } from '@/api/dictioneries';
 import { create, StoreApi } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
-export interface iFilters {
-    [key: string]: boolean | string | number;
-}
-
-interface IFiltersState {
-    filters: iFilters;
-    setFiltes: (key: string, value: boolean | string | number) => void;
-    resetFiltes: () => void;
-}
-
-export const filters = (set: StoreApi<IFiltersState>['setState']) => ({
-        filters: {},
-        setFiltes: (key: string, value: boolean | string | number) => set((state) => ({ ...state, filters: { ...state.filters, [key]: value } })),
-        resetFiltes: () => set(() => ({ filters: {} })),
-    });
 
 interface IEditableTaskState {
     editable: { [key: string]: boolean };
@@ -56,12 +41,11 @@ export const state = (set: StoreApi<IStateState>['setState']) => ({
             storage: createJSONStorage(() => localStorage),
         });
         
-export interface IStoreState extends IFiltersState, IEditableTaskState, IStateState, IUserState {};
+export interface IStoreState extends IEditableTaskState, IStateState, IUserState {};
 
 export const createStoreLocal = (set: StoreApi<IStoreState>['setState'], 
     get: StoreApi<IStoreState>['getState'], 
     api: StoreApi<IStoreState>) => ({
-    ...filters(set),
     ...editableTask(set),
     ...state(set),
     ...user(set, get, api),

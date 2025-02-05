@@ -31,8 +31,6 @@ export function AddTask() {
       });
   };
 
-  console.log('state', state);
-
   return (
     <form 
         key={state.resetKey}
@@ -56,7 +54,7 @@ export function AddTask() {
         </Box>
         <Box className="mb-4">
           <FormSelect 
-            label="priority" defaultValue={state?.data?.priority as string} options={PRIORITIES} />
+            label="priority" value={state?.data?.priority as string} options={PRIORITIES} />
         </Box>
         <Box>
           <FormButton 

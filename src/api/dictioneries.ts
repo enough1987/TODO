@@ -46,3 +46,9 @@ export const FORMAT = 'DD/MM/YYYY';
 
 export const INITIAL_TASK: OmitedITask = { name: '', due_date: null as unknown as Date, priority: PRIORITIES[0] };
 
+export const FILTERS_NAMES = ['name', 'completed', 'priority'];
+export type filterNames = typeof FILTERS_NAMES[number];
+export interface IFilters {
+    [key: filterNames]: boolean | string | number;
+}
+

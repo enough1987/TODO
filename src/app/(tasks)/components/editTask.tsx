@@ -35,8 +35,6 @@ export function EditTask({ task }: { task: ITask }) {
     });
   };
 
-  if(editable?.[state?.data?.id as string]) console.log('state', state);
-
   return (
     <form 
         key={state.resetKey}
@@ -74,7 +72,7 @@ export function EditTask({ task }: { task: ITask }) {
             {
                 !editable?.[state.data?.id as string]
                 ? <Box className="truncate p-2">{state.data?.priority ?? 'N/A'}</Box>
-                : <FormSelect label="priority" defaultValue={state?.data?.priority as string} options={PRIORITIES} />
+                : <FormSelect label="priority" value={state?.data?.priority as string} options={PRIORITIES} />
             }
         </Box>
         {
@@ -82,7 +80,7 @@ export function EditTask({ task }: { task: ITask }) {
                 <Box sx={{
                     width: '11.875rem',
                 }}
-                className="p-2">
+                className="">
                     <FormButton label='Save'type="submit" />
                 </Box>
             )

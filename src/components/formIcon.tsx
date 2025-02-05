@@ -22,7 +22,7 @@ export function FormIcon({ children, label, disabled, onClick }: IProps) {
             className="w-6 h-6 text-gray-800 dark:text-white disabled:opacity-50" 
             aria-label={label}
             disabled={!!pendingGlocal || disabled}
-            area-disabled={!!pendingGlocal || disabled || undefined}
+            area-disabled={(!!pendingGlocal || disabled) ? 'true' : 'false'}
             aria-hidden={!!pendingGlocal || disabled}
         >
             {children}

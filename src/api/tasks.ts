@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { ERROR_FEEDBACK_DATA, ERROR_INVALID_FORM_DATA, taskIdSchema, taskSchema } from "./validation";
 import { SafeParseReturnType } from "zod";
 
-const DELAY = 3000;
+const DELAY = 1000;
 
 export async function getAllTasksApi () {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, DELAY));
 
     const res: ITask[] = await fetch(`${BASE_API}/tasks`).then(res => res.json());
 

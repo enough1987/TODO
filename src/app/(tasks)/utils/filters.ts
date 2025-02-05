@@ -1,7 +1,8 @@
-import { COMPLETNES, ITask } from "@/api/dictioneries";
-import { iFilters } from "@/store/store";
+import { COMPLETNES, filterNames, FILTERS_NAMES, IFilters, ITask } from "@/api/dictioneries";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-    const filterSelectBoolean = (filters: iFilters, item: ITask, key: keyof ITask) => {
+
+    const filterSelectBoolean = (filters: IFilters, item: ITask, key: keyof ITask) => {
         if (
             !filters?.[key] ||
             filters?.[key] === 'all' ||
@@ -13,7 +14,7 @@ import { iFilters } from "@/store/store";
         return false;
     }
 
-    const filterSelectString = (filters: iFilters, item: ITask, key: keyof ITask) => {
+    const filterSelectString = (filters: IFilters, item: ITask, key: keyof ITask) => {
         if (
             !filters?.[key] ||
             filters?.[key] === 'all' ||
@@ -24,7 +25,7 @@ import { iFilters } from "@/store/store";
         return false;
     }
 
-    const filterInput = (filters: iFilters, item: ITask, key: keyof ITask) => {
+    const filterInput = (filters: IFilters, item: ITask, key: keyof ITask) => {
         if (
             !filters?.[key] ||
             (item[key] as string)?.includes(filters[key] as string)
@@ -34,7 +35,7 @@ import { iFilters } from "@/store/store";
         return false;
     }
 
-    export const filter = (filters: iFilters, item: ITask) => {
+    export const filter = (filters: IFilters, item: ITask) => {
         if(filterSelectBoolean(filters, item, 'completed') 
           && filterSelectString(filters, item, 'priority')
           && filterInput(filters, item, 'name')
@@ -42,4 +43,50 @@ import { iFilters } from "@/store/store";
             return true;
         } 
         return false
+    }
+
+
+    export const useFilters = (): [
+        IFilters, 
+        (key: filterNames, value: string) => void, 
+        () => void,
+    ] => {
+        const searchParams = useSearchParams();
+        const pathname = usePathname();
+        const { replace } = useRouter();
+
+        const changeFilter = (key: filterNames, value: string) => {
+                const params = new URLSearchParams(searchParams);
+                if (value) {
+                  params.set(key, value);
+                } else {
+                  params.delete(key);
+                }
+                replace(`${pathname}?${params.toString()}`);
+        }
+        
+        const resetAllFilters = () => {
+                const params = new URLSearchParams(searchParams);
+                FILTERS_NAMES.forEach((key) =>  params.delete(key));
+        
+                replace(`${pathname}?${params.toString()}`);
+        }
+
+        const getAllFilters = (): IFilters => {
+            const params = new URLSearchParams(searchParams);
+
+            return {
+                ...FILTERS_NAMES.reduce((acc, key) => {
+                    return { ...acc, [key]: params.get(key) };
+                }, {})
+            } as IFilters;
+        }
+
+        const filters = getAllFilters();
+
+        return [
+            filters,
+            changeFilter,
+            resetAllFilters,
+        ];     
     }

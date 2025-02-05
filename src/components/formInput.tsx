@@ -2,8 +2,11 @@
 
 import { useStoreInContext } from '@/store/storeProvider';
 import { capitalizeFirstLetter } from '@/utils/utils';
-import { SxProps } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { SxProps } from '@mui/system';
 import TextField from '@mui/material/TextField';
+import { useEffect, useState } from 'react';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 
 interface IProps {
@@ -11,32 +14,51 @@ interface IProps {
     name?: string,
     label: string, 
     value: string,
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange?: (value: string) => void,
 }
 
 const FormInput = ({ sx, name, label, value, onChange }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
 
-    return (
-      <TextField
-          role='input'
-          defaultValue={value || ""}
-          disabled={!!pendingGlocal}
-          area-disabled={!!pendingGlocal || undefined}
-                    id={name || label}
-                    name={name || label}
-                    label={capitalizeFirstLetter(label)}
-                    aria-label={label}
-                    variant="outlined"
-                    sx={{ 
-                        width: '100%', 
-                        opacity: pendingGlocal ? 0.5 : 1,
-                        ...sx 
-                    }}
-                    size="small"
-                    onChange={onChange}
-      />
-    );
+    const [_value, setValue] = useState(value);
+
+    useEffect(() => {
+        if(!value) setValue('');
+    }, [value]);
+
+    return (<TextField
+        role='input'
+        value={_value}
+        disabled={!!pendingGlocal}
+        area-disabled={!!pendingGlocal ? 'true' : 'false'}
+          id={name || label}
+          name={name || label}
+          label={capitalizeFirstLetter(label)}
+          aria-label={label}
+          variant="outlined"
+          sx={{ 
+              width: '100%', 
+              opacity: pendingGlocal ? 0.5 : 1,
+              ...sx 
+          }}
+          size="small"
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange?.(e.target.value);
+          }}
+          slotProps={{
+            input: {
+                endAdornment: (
+                    <IconButton sx={{ padding: 0, paddingLeft: 1 }} onClick={() => {
+                        setValue("");
+                        onChange?.("");
+                    }}>
+                      {value.length > 0 ? <ClearOutlinedIcon fontSize="small" /> : ''}
+                    </IconButton>
+                )
+            }
+          }}
+/>);
 };
 
 export default FormInput;

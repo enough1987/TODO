@@ -29,11 +29,8 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
                 role="datepicker"
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
-                area-disabled={!!pendingGlocal || undefined}
+                area-disabled={!!pendingGlocal ? 'true' : 'false'}
                 id={name || label}
-                name={name || label}
-                label={capitalizeFirstLetter(label)}
-                aria-label={label}
                 size="small"
                 {...params}
                 onClick={() => {
@@ -52,7 +49,8 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
         minDate={minDate}
         disabled={!!pendingGlocal}
         aria-label={label}
-        label={label}
+        area-disabled={!!pendingGlocal ? 'true' : 'false'}
+        label={capitalizeFirstLetter(label)}
         name={name || label}
         open={open}
         onOpen={() => setOpen(true)}

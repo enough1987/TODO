@@ -23,7 +23,7 @@ const FormButton = ({ sx, label, type = 'button', onClick }: IProps) => {
           ...sx }}
         variant="outlined"
         disabled={!!pendingGlocal}
-        area-disabled={!!pendingGlocal || undefined}
+        area-disabled={!!pendingGlocal ? 'true' : 'false' }
         aria-busy={!!pendingGlocal}
         aria-label={label}
         type={type}

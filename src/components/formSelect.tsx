@@ -6,55 +6,61 @@ import { SxProps } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+import { useEffect, useState } from 'react';
 
 interface IProps {
     sx?: SxProps,
     name?: string,
     label: string, 
     value?: string,
-    defaultValue?: string,
     options: string[],
-    onChange?: (e: SelectChangeEvent) => void,
+    onChange?: (value: string) => void,
 }
 
-const FormSelect = ({ sx, name, label, value, defaultValue, options, onChange }: IProps) => {
+const FormSelect = ({ sx, name, label, value, options, onChange }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
 
-    const props: { value?: string, defaultValue?: string } = {};
-    if(onChange) {
-        props.value = value || '';
-    } else {
-        props.defaultValue = defaultValue || '';
-    }
+    const [_value, setValue] = useState(value);
 
-
+    useEffect(() => {
+        if(!value) setValue('');
+    }, [value]);
 
     return (
         <FormControl sx={{ width: '100%', ...sx }}>
             <InputLabel 
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
-                area-disabled={!!pendingGlocal || undefined}
-                id={label} 
+                area-disabled={!!pendingGlocal ? 'true' : 'false'}
+                id={(name || label) + '-label'}
                 size="small">
-                    {capitalizeFirstLetter(label)}
+                {capitalizeFirstLetter(label)}
             </InputLabel>
             <Select
                 role="select"
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
-                area-disabled={!!pendingGlocal || undefined}
-                {...props}
+                area-disabled={!!pendingGlocal ? 'true' : 'false'}
+                value={_value || ''}
+                labelId={(name || label) + '-label'}
                 id={name || label}
                 name={name || label}
                 label={capitalizeFirstLetter(label)}
+                area-label={label}
                 size="small"
                 MenuProps={{ disablePortal: true }}
-                onChange={onChange}
+                onChange={(e) => {
+                    setValue(e.target.value as string);
+                    onChange?.(e.target.value as string);
+                }}
                 >
                 {options.map((item) => (
-                    <MenuItem key={item} value={item}>{item}</MenuItem>
+                    <MenuItem
+                        role='option'
+                        key={item} 
+                        value={item}
+                    >{item}</MenuItem>
                 ))}
             </Select>
       </FormControl>
