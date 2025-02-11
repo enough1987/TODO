@@ -4,6 +4,7 @@ import { POST_EDIT_LIST_HEADERS } from "@/api/dictioneries";
 import { ListItems } from "./listItems";
 import ClickOutside from "./clickOutside";
 import Box from "@mui/material/Box";
+import { Suspense } from "react";
 
 export async function TaskList() {
     const data = await getAllTasksApi();
@@ -29,7 +30,9 @@ export async function TaskList() {
           role="list"
           className="w-5/6 space-y-1 text-gray-500 list-inside dark:text-gray-400">
             {listHeaders}
-            <ListItems items={data} />
+            <Suspense>
+              <ListItems items={data} />
+            </Suspense>
         </ul>
       </ClickOutside>
     );
