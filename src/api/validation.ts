@@ -6,8 +6,8 @@ export const ERROR_FEEDBACK_DATA = 'Invalid feedback data';
 export const taskIdSchema = z.string();
 
 export const taskSchema = z.object({
-    name: z.string().min(3),
-    priority: z.string(),
-    due_date: z.coerce.date(),
+  name: z.string().min(3),
+  priority: z.string(),
+  due_date: z.coerce.date().refine((data) => data > new Date(Date.now() - 3600 * 1000), {message: 'Due date must be in the future'}),
   });
   

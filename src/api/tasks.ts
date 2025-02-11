@@ -28,6 +28,8 @@ export async function addTaskApi (data: OmitedITask): Promise<ITaskState> {
 
     const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
 
+    console.log('validated', validated);
+
     if (!validated.success) {
         console.log('error', validated.error);
         return { error: ERROR_FEEDBACK_DATA, data: null};
@@ -65,6 +67,8 @@ export async function editTaskApi (data: ITask): Promise<ITaskState> {
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
     const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
+
+    console.log('validated', validated);
 
     if (!validated.success) {
         return { error: ERROR_FEEDBACK_DATA, data: null};

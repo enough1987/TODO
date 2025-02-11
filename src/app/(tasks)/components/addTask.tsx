@@ -73,7 +73,7 @@ export function AddTask() {
             options={PRIORITIES} />
         </Box>
         <Box>
-          <FormButton 
+          <FormButton
             sx={{ width: '100%' }} label='Add task' type="submit" />
         </Box>
     </form>

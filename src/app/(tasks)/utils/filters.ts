@@ -34,10 +34,32 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         return false;
     }
 
+    const filterDateFrom = (filters: IFilters, item: ITask, key: keyof ITask) => {
+        if (
+            !filters?.from ||
+            filters?.from < item[key]
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    const filterDateTo = (filters: IFilters, item: ITask, key: keyof ITask) => {
+        if (
+            !filters?.to ||
+            filters?.to > item[key]
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     export const filter = (filters: IFilters, item: ITask) => {
         if(filterSelectBoolean(filters, item, 'completed') 
           && filterSelectString(filters, item, 'priority')
           && filterInput(filters, item, 'name')
+          && filterDateFrom(filters, item, 'due_date')
+          && filterDateTo(filters, item, 'due_date')
         ) {
             return true;
         } 

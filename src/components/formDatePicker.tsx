@@ -45,6 +45,7 @@ const FormDatePicker = ({ sx, minDate, name, label, value, error, onChange }: IP
 
     return (
       <DatePicker 
+        
         sx={{ width: '100%', ...sx }}
         value={value}
         minDate={minDate as Date}

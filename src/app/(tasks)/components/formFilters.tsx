@@ -6,6 +6,7 @@ import FormButton from '@/components/formButton';
 import FormSelect from '@/components/formSelect';
 import Box from '@mui/material/Box';
 import { useStoreInContext } from '@/store/storeProvider';
+import FormDatePicker from '@/components/formDatePicker';
 
 export function  FormFilters () {
     const filters = useStoreInContext((state) => state.filters);
@@ -44,6 +45,22 @@ export function  FormFilters () {
                         changeFilter('priority', value);
                     }}
                 />
+            <Box className="w-2"></Box>
+                      <FormDatePicker 
+                        sx={{ width: '12.5rem' }}
+                        name="from" 
+                        label="from"   
+                        value={filters?.from ? new Date(filters.from as string) : null}
+                        onChange={(value) => changeFilter('from', (value as Date).toISOString())}
+                      />
+            <Box className="w-2"></Box>
+                      <FormDatePicker 
+                        sx={{ width: '12.5rem' }}
+                        name="to" 
+                        label="to"   
+                        value={filters?.to ? new Date(filters.to as string) : null}
+                        onChange={(value) => changeFilter('to', (value as Date).toISOString())}
+                      />
             <Box className="w-2"></Box>
                 <FormButton 
                     sx={{ width: '9.375rem' }} 
