@@ -47,8 +47,8 @@ const FormDatePicker = ({ sx, minDate, name, label, value, error, onChange }: IP
       <DatePicker 
         
         sx={{ width: '100%', ...sx }}
-        value={value}
-        minDate={minDate as Date}
+        value={value ? value : null}
+        minDate={minDate ? minDate as Date : undefined}
         disabled={!!pendingGlocal}
         aria-label={label}
         area-disabled={!!pendingGlocal ? 'true' : 'false'}
