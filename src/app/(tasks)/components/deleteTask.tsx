@@ -1,9 +1,11 @@
 'use client'
 
+import { toastCofig } from "@/api/dictioneries";
 import { deleteTaskApi } from "@/api/tasks";
-import { FormIcon } from "@/components/formIcon";
+import FormIcon from "@/components/formIcon";
 import { useStoreInContext } from "@/store/storeProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from "react-toastify";
 
 interface IProps {
     id: string;
@@ -19,8 +21,13 @@ export function DeleteTask({ id }: IProps) {
             label={`Delete task ${id}`}
             onClick={async () => { 
                 setPendingGlocal(true);
-                await deleteTaskApi(id);
-                setPendingGlocal(false);
+                try {
+                    await deleteTaskApi(id);
+                } catch (error) {
+                    toast.error(error as string, toastCofig)
+                } finally { 
+                    setPendingGlocal(false);
+                }
             }}
         
         >

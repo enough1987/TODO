@@ -7,25 +7,21 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useEffect, useState } from 'react';
+import { memo } from 'react';
 
 interface IProps {
+    empty?: boolean,
     sx?: SxProps,
     name?: string,
     label: string, 
     value?: string,
     options: string[],
-    onChange?: (value: string) => void,
+    error?: boolean,
+    onChange?: (e: string) => void,
 }
 
-const FormSelect = ({ sx, name, label, value, options, onChange }: IProps) => {
+const FormSelect = ({ empty = true, sx, name, label, value, options, error, onChange }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
-
-    const [_value, setValue] = useState(value);
-
-    useEffect(() => {
-        if(!value) setValue('');
-    }, [value]);
 
     return (
         <FormControl sx={{ width: '100%', ...sx }}>
@@ -39,10 +35,11 @@ const FormSelect = ({ sx, name, label, value, options, onChange }: IProps) => {
             </InputLabel>
             <Select
                 role="select"
+                error={error}
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
                 area-disabled={!!pendingGlocal ? 'true' : 'false'}
-                value={_value || ''}
+                value={value || ''}
                 labelId={(name || label) + '-label'}
                 id={name || label}
                 name={name || label}
@@ -51,10 +48,19 @@ const FormSelect = ({ sx, name, label, value, options, onChange }: IProps) => {
                 size="small"
                 MenuProps={{ disablePortal: true }}
                 onChange={(e) => {
-                    setValue(e.target.value as string);
-                    onChange?.(e.target.value as string);
+                    onChange?.(e.target.value);
                 }}
                 >
+                    {
+                        empty && (
+                            <MenuItem
+                                sx={{ color:'white' }}
+                                role='option'
+                                key={''} 
+                                value={''}
+                            > - </MenuItem>
+                        )
+                    }
                 {options.map((item) => (
                     <MenuItem
                         role='option'
@@ -67,4 +73,4 @@ const FormSelect = ({ sx, name, label, value, options, onChange }: IProps) => {
     );
 };
 
-export default FormSelect;
+export default memo(FormSelect);

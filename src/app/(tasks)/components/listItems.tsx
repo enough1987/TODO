@@ -1,13 +1,14 @@
 "use client";
 
-import { ITask } from '@/api/dictioneries';
+import { FILTERS_NAMES, IFilters, ITask } from '@/api/dictioneries';
 import { EditTask } from './editTask';
 import { EditTaskIcon } from './editITaskIcon';
 import { CompleteTask } from './completed';
 import { DeleteTask } from './deleteTask';
-import { filter, useFilters } from '../utils/filters';
+import { filter } from '../utils/filters';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import Box from '@mui/material/Box';
+import { useParamsList } from '@/utils/utils';
 
 const sortByCreated = (a: ITask, b: ITask) => (new Date(b.created)).getTime() - (new Date(a.created)).getTime();
 const sortByComleted = (a: ITask, b: ITask) => (a.completed === b.completed) ? 0 : (a.completed ? 1 : -1)
@@ -17,10 +18,10 @@ interface ListItemsProps {
 }
 
 export function ListItems ({ items }: ListItemsProps) {
-    const [filters] = useFilters();
+    const params = useParamsList(FILTERS_NAMES) as unknown as IFilters;
     
     const listItems = items
-          ?.filter((item) => filter(filters, item ))
+          ?.filter((item) => filter(params, item ))
           .sort(sortByCreated).sort(sortByComleted)
           .map((item) => <li key={item.id}
             role="listitem"

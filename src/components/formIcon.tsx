@@ -2,6 +2,7 @@
 
 import { useStoreInContext } from '@/store/storeProvider';
 import IconButton from '@mui/material/IconButton';
+import { memo } from 'react';
 
 interface IProps {
     children: React.ReactNode;
@@ -10,7 +11,7 @@ interface IProps {
     onClick: () => void;
 }
 
-export function FormIcon({ children, label, disabled, onClick }: IProps) {
+const FormIcon = ({ children, label, disabled, onClick }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
 
     return (
@@ -29,3 +30,5 @@ export function FormIcon({ children, label, disabled, onClick }: IProps) {
         </IconButton>
     );
 }
+
+export default memo(FormIcon);

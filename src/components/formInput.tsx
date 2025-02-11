@@ -5,7 +5,7 @@ import { capitalizeFirstLetter } from '@/utils/utils';
 import IconButton from '@mui/material/IconButton';
 import { SxProps } from '@mui/system';
 import TextField from '@mui/material/TextField';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 
@@ -14,21 +14,24 @@ interface IProps {
     name?: string,
     label: string, 
     value: string,
+    error?: boolean,
     onChange?: (value: string) => void,
 }
 
-const FormInput = ({ sx, name, label, value, onChange }: IProps) => {
+const FormInput = ({ sx, name, label, value, error, onChange }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
 
     const [_value, setValue] = useState(value);
 
     useEffect(() => {
-        if(!value) setValue('');
+        if(_value !== value) setValue(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     return (<TextField
         role='input'
         value={_value}
+        error={error}
         disabled={!!pendingGlocal}
         area-disabled={!!pendingGlocal ? 'true' : 'false'}
           id={name || label}
@@ -50,7 +53,6 @@ const FormInput = ({ sx, name, label, value, onChange }: IProps) => {
             input: {
                 endAdornment: (
                     <IconButton sx={{ padding: 0, paddingLeft: 1 }} onClick={() => {
-                        setValue("");
                         onChange?.("");
                     }}>
                       {value.length > 0 ? <ClearOutlinedIcon fontSize="small" /> : ''}
@@ -61,4 +63,4 @@ const FormInput = ({ sx, name, label, value, onChange }: IProps) => {
 />);
 };
 
-export default FormInput;
+export default memo(FormInput);

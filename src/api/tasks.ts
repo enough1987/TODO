@@ -1,8 +1,8 @@
 'use server'
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { BASE_API, INITIAL_TASK, ITask, ITaskState, OmitedITask } from "./dictioneries";
 import { v4 as uuidv4 } from 'uuid';
-import { ERROR_FEEDBACK_DATA, ERROR_INVALID_FORM_DATA, taskIdSchema, taskSchema } from "./validation";
+import { ERROR_FEEDBACK_DATA, taskIdSchema, taskSchema } from "./validation";
 import { SafeParseReturnType } from "zod";
 
 const DELAY = 1000;
@@ -11,32 +11,26 @@ export async function getAllTasksApi () {
     // TODO: remove for prod
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
-    const res: ITask[] = await fetch(`${BASE_API}/tasks`).then(res => res.json());
+    const res: ITask[] = await fetch(`${BASE_API}/tasks`, { 
+        cache: 'force-cache', 
+        next: { 
+            tags: ['/tasks'],
+            revalidate: 600
+        } 
+    }).then(res => res.json());
 
     return res;
 }
 
-export async function addTaskApi (prevState: ITaskState, formData: FormData): Promise<ITaskState> {
+export async function addTaskApi (data: OmitedITask): Promise<ITaskState> {
     // TODO: remove for prod
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
-    if (!(formData instanceof FormData)) {
-        return { error: ERROR_INVALID_FORM_DATA, data: prevState.data };
-    }
-
-    const data = Object.fromEntries(formData.entries());
-    console.log('data', data);
-    console.log('server due_date : ', data.due_date);
     const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
 
     if (!validated.success) {
         console.log('error', validated.error);
-        return { error: ERROR_FEEDBACK_DATA, data: {
-            ...prevState.data,
-            name: (data as OmitedITask)?.name as string || prevState.data.name,
-            priority: (data as OmitedITask)?.priority as string || prevState.data.priority,
-            due_date: (data as OmitedITask)?.due_date || prevState.data.due_date,
-        }};
+        return { error: ERROR_FEEDBACK_DATA, data: null};
     }
 
     const task: ITask = {
@@ -58,54 +52,31 @@ export async function addTaskApi (prevState: ITaskState, formData: FormData): Pr
             body: JSON.stringify(task)
         }).then(res => res.json());
     } catch (error: unknown) {
-        return { error: (error as Error).message, data: {
-            ...prevState.data,
-            name: (validated.data as unknown as OmitedITask)?.name as string || prevState.data.name,
-            priority: (validated.data as unknown as OmitedITask)?.priority as string || prevState.data.priority,
-            due_date: (validated.data as unknown as OmitedITask)?.due_date as string || prevState.data.due_date,
-        }};
+        return { error: (error as Error).message, data: null};
     }
 
-    await revalidatePath('/tasks')
+    await revalidateTag('/tasks')
 
-    return { resetKey: uuidv4(), data: INITIAL_TASK as ITask, error: null };
+    return { data: INITIAL_TASK as ITask, error: null };
 }
 
-export async function editTaskApi (prevState: ITaskState, formData: FormData): Promise<ITaskState> {
+export async function editTaskApi (data: ITask): Promise<ITaskState> {
     // TODO: remove for prod
     await new Promise(resolve => setTimeout(resolve, DELAY));
 
-    if (!(formData instanceof FormData)) {
-        return { error: ERROR_INVALID_FORM_DATA, data: prevState.data };
-    }
-
-    const data = Object.fromEntries(formData.entries());
-    console.log('data', data.due_date);
-    const validated = taskSchema.safeParse(data);
+    const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
 
     if (!validated.success) {
-        console.log('error', validated?.error);
-        console.log('---- > ', {
-            ...prevState.data,
-            name: (data as OmitedITask)?.name as string || prevState.data.name,
-            priority: (data as unknown as OmitedITask)?.priority as string || prevState.data.priority,
-            due_date: (data as unknown as OmitedITask)?.due_date || prevState.data.due_date,
-        });
-        return { error: ERROR_FEEDBACK_DATA, data: {
-            ...prevState.data,
-            name: (data as OmitedITask)?.name as string || prevState.data.name,
-            priority: (data as OmitedITask)?.priority as string || prevState.data.priority,
-            due_date: (data as OmitedITask)?.due_date || prevState.data.due_date,
-        } };
+        return { error: ERROR_FEEDBACK_DATA, data: null};
     }
 
     const task: ITask = {
-        id: prevState.data.id,
+        id: data.id as string,
         name: validated.data.name,
         priority: validated.data.priority,
         due_date: new Date(validated.data?.due_date),
-        completed: prevState.data.completed,
-        created: prevState.data.created,
+        completed: data.completed,
+        created: data.created,
     }
 
     try {
@@ -118,17 +89,12 @@ export async function editTaskApi (prevState: ITaskState, formData: FormData): P
             body: JSON.stringify(task)
         }).then(res => res.json());
     } catch (error: unknown) {
-        return { error: (error as Error).message, data: {
-            ...prevState.data,
-            name: (validated.data as unknown as OmitedITask)?.name as string || prevState.data.name,
-            priority: (validated.data as unknown as OmitedITask)?.priority as string || prevState.data.priority,
-            due_date: (validated.data as unknown as OmitedITask)?.due_date || prevState.data.due_date,
-        }};
+        return { error: (error as Error).message, data: null };
     }
 
-    await revalidatePath('/tasks')
+    await revalidateTag('/tasks')
 
-    return { resetKey: uuidv4(), data: task, error: null };
+    return { data: task, error: null };
 }
 
 export async function completeTaskApi (task: ITask) {
@@ -160,7 +126,7 @@ export async function completeTaskApi (task: ITask) {
         return { error: (error as Error).message, data: null };
     }
 
-    await revalidatePath('/tasks')
+    await revalidateTag('/tasks')
 
     return res;
 }
@@ -185,7 +151,7 @@ export async function deleteTaskApi (id: string) {
         return { error: (error as Error).message, data: null };
     }
 
-    await revalidatePath('/tasks')
+    await revalidateTag('/tasks')
 
     return true;
 }

@@ -3,6 +3,7 @@
 import { useStoreInContext } from '@/store/storeProvider';
 import { SxProps } from '@mui/material';
 import Button from '@mui/material/Button';
+import { memo } from 'react';
 
 
 interface IProps {
@@ -35,4 +36,4 @@ const FormButton = ({ sx, label, type = 'button', onClick }: IProps) => {
     );
 };
 
-export default FormButton;
+export default memo(FormButton);

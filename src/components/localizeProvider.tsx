@@ -1,7 +1,7 @@
 "use client"
 
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { ReactNode } from "react";
 
 interface LocalizationProviderProps {
@@ -10,7 +10,9 @@ interface LocalizationProviderProps {
 
 const LocalizeProvider: React.FC<LocalizationProviderProps> = ({ children }) => {
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider 
+            dateAdapter={AdapterDateFns}
+        >
             {children}
         </LocalizationProvider>
     );

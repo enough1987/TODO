@@ -1,6 +1,6 @@
 'use client'
 
-import { FormIcon } from '@/components/formIcon';
+import FormIcon from '@/components/formIcon';
 import { useStoreInContext } from '@/store/storeProvider';
 import EditIcon from '@mui/icons-material/Edit';
 

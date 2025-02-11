@@ -2,7 +2,7 @@
 
 import { ITask } from "@/api/dictioneries";
 import { completeTaskApi } from "@/api/tasks";
-import { FormIcon } from "@/components/formIcon";
+import FormIcon from "@/components/formIcon";
 import { useStoreInContext } from "@/store/storeProvider";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
@@ -16,7 +16,7 @@ export function CompleteTask({ task }: IProps) {
 
     return (
         <FormIcon 
-        disabled={!!Object.keys(editable || {}).length}
+        disabled={!!Object.keys(editable || {}).length || task.completed}
         label={`Complete task ${task.name}`}
         onClick={async () => { 
             setPendingGlocal(true);

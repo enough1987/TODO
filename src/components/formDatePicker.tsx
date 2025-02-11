@@ -3,8 +3,7 @@
 import { useStoreInContext } from '@/store/storeProvider';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { capitalizeFirstLetter } from '../utils/utils';
 import { SxProps } from '@mui/material';
 
@@ -13,12 +12,13 @@ interface IProps {
     sx?: SxProps,
     name?: string,
     label: string, 
-    minDate?: dayjs.Dayjs | undefined, 
-    value: dayjs.Dayjs | undefined,
-    onChange?: (e: dayjs.Dayjs | null) => void,
+    minDate?: Date | null, 
+    value: Date | null,
+    error?: boolean,
+    onChange?: (e: Date | null) => void,
 }
 
-const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) => {
+const FormDatePicker = ({ sx, minDate, name, label, value, error, onChange }: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
     const [open, setOpen] = useState(false);
     
@@ -27,6 +27,7 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
           textField: (params: TextFieldProps) => (
             <TextField
                 role="datepicker"
+                error={error}
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
                 disabled={!!pendingGlocal}
                 area-disabled={!!pendingGlocal ? 'true' : 'false'}
@@ -39,14 +40,14 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
             />
           ),
         }),
-        [name, label, pendingGlocal],
+        [name, label, error, pendingGlocal],
       );
 
     return (
       <DatePicker 
         sx={{ width: '100%', ...sx }}
-        defaultValue={value}
-        minDate={minDate}
+        value={value}
+        minDate={minDate as Date}
         disabled={!!pendingGlocal}
         aria-label={label}
         area-disabled={!!pendingGlocal ? 'true' : 'false'}
@@ -61,4 +62,4 @@ const FormDatePicker = ({ sx, minDate, name, label, value, onChange }: IProps) =
     );
 };
 
-export default FormDatePicker;
+export default memo(FormDatePicker);

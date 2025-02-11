@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { StoreProvider } from "@/store/storeProvider";
+import { ToastContainer } from 'react-toastify';
 
 import "./globals.css";
 import LocalizeProvider from "@/components/localizeProvider";
@@ -41,6 +42,7 @@ export default function RootLayout({
           <StoreProvider>
             <Header />
             {children}
+            <ToastContainer />
           </StoreProvider>
         </LocalizeProvider>
       </body>

@@ -1,9 +1,9 @@
-import { IUser } from '@/api/dictioneries';
+import { filterNames, IFilters, IUser } from '@/api/dictioneries';
 import { create, StoreApi } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { searchParamsStorage } from './searchParamsStorage';
 
-
-interface IEditableTaskState {
+export interface IEditableTaskState {
     editable: { [key: string]: boolean };
     setEditableOne: (key: string, value: boolean) => void;
     setEditableMultiple: (key: string, value: boolean) => void;
@@ -17,7 +17,7 @@ export const editableTask = (set: StoreApi<IEditableTaskState>['setState']) => (
         resetEditable: () => set(() => ({ editable: {} })),
     });
 
-interface IStateState {
+export interface IStateState {
     pendingGlocal: boolean;
     setPendingGlocal: (value: boolean) => void;
 }
@@ -27,27 +27,69 @@ export const state = (set: StoreApi<IStateState>['setState']) => ({
         setPendingGlocal: (value: boolean) => set((state) => ({ ...state, pendingGlocal: value })),
     });
 
-    interface IUserState {
-        user: IUser | null,
-        setUser: (user: IUser) => void
-    }
+export interface IUserState {
+    user: IUser | null,
+    setUser: (user: IUser) => void
+}
     
-    export const user = persist<IUserState>(
+export const user = persist<IUserState>(
         (set) => ({
             user: null,
             setUser: (user: IUser) => set((state) => ({ ...state, user })),
         }), {
-            name: 'count-store',
+            name: 'user',
             storage: createJSONStorage(() => localStorage),
-        });
+});
+
+export interface IFiltersState {
+            filters: IFilters,
+            changeFilter: (key: filterNames, value: string) => void,
+            resetFilters: () => void,
+}
+
+const initiaFiltersState = { } as IFilters;
         
-export interface IStoreState extends IEditableTaskState, IStateState, IUserState {};
+export const filters = persist<IFiltersState>(
+            (set) => ({
+                filters: initiaFiltersState,
+                changeFilter: (key: filterNames, value: string) => set((state) => ({ filters: { ...state.filters, [key]: value } })),
+                resetFilters: () => set(() => {
+                    return { filters: initiaFiltersState };
+                }),
+            }), {
+                name: 'filters',
+                partialize: (state) => ({ filters: state.filters } as IFiltersState),
+                storage: createJSONStorage(() => ({
+                    getItem: async (name: string) => {
+                        const value = await searchParamsStorage.getItem(name);
+                        return value ? JSON.stringify(value) : null;
+                    },
+                    setItem: (name: string, value: string) => searchParamsStorage.setItem(name, JSON.parse(value)),
+                    removeItem: searchParamsStorage.removeItem,
+                }), {
+                    replacer: (key, value) => {
+                        if(key === 'filters') {
+                            console.log('replacer', key, value);
+                        }
+                        return value;
+                    },
+                    reviver: (key, value) => {
+                        if(key === 'filters') {
+                            console.log('reviver', key, value); 
+                        }
+                        return value;
+                    },
+                }),
+});
+        
+export interface IStoreState extends IEditableTaskState, IStateState, IUserState, IFiltersState {};
 
 export const createStoreLocal = (set: StoreApi<IStoreState>['setState'], 
     get: StoreApi<IStoreState>['getState'], 
     api: StoreApi<IStoreState>) => ({
     ...editableTask(set),
     ...state(set),
+    ...filters(set, get, api),
     ...user(set, get, api),
 });
 

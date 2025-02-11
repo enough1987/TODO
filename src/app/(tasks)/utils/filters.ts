@@ -1,5 +1,4 @@
-import { COMPLETNES, filterNames, FILTERS_NAMES, IFilters, ITask } from "@/api/dictioneries";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
 
 
     const filterSelectBoolean = (filters: IFilters, item: ITask, key: keyof ITask) => {
@@ -43,50 +42,4 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
             return true;
         } 
         return false
-    }
-
-
-    export const useFilters = (): [
-        IFilters, 
-        (key: filterNames, value: string) => void, 
-        () => void,
-    ] => {
-        const searchParams = useSearchParams();
-        const pathname = usePathname();
-        const { replace } = useRouter();
-
-        const changeFilter = (key: filterNames, value: string) => {
-                const params = new URLSearchParams(searchParams);
-                if (value) {
-                  params.set(key, value);
-                } else {
-                  params.delete(key);
-                }
-                replace(`${pathname}?${params.toString()}`);
-        }
-        
-        const resetAllFilters = () => {
-                const params = new URLSearchParams(searchParams);
-                FILTERS_NAMES.forEach((key) =>  params.delete(key));
-        
-                replace(`${pathname}?${params.toString()}`);
-        }
-
-        const getAllFilters = (): IFilters => {
-            const params = new URLSearchParams(searchParams);
-
-            return {
-                ...FILTERS_NAMES.reduce((acc, key) => {
-                    return { ...acc, [key]: params.get(key) };
-                }, {})
-            } as IFilters;
-        }
-
-        const filters = getAllFilters();
-
-        return [
-            filters,
-            changeFilter,
-            resetAllFilters,
-        ];     
     }

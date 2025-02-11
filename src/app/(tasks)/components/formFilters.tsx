@@ -5,10 +5,12 @@ import FormInput from '@/components/formInput';
 import FormButton from '@/components/formButton';
 import FormSelect from '@/components/formSelect';
 import Box from '@mui/material/Box';
-import { useFilters } from '../utils/filters';
+import { useStoreInContext } from '@/store/storeProvider';
 
 export function  FormFilters () {
-    const [ filters, changeFilter, resetAllFilters ] = useFilters();
+    const filters = useStoreInContext((state) => state.filters);
+    const changeFilter = useStoreInContext((state) => state.changeFilter);
+    const resetFilters = useStoreInContext((state) => state.resetFilters);
 
     return (
         <form
@@ -47,7 +49,7 @@ export function  FormFilters () {
                     sx={{ width: '9.375rem' }} 
                     label='Reset' 
                     onClick={() => {
-                        resetAllFilters();
+                        resetFilters();
                 }}/>
         </form>
     );

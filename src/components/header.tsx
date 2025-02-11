@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import { memo } from "react";
 
 const Header = () => {
     return (
@@ -8,4 +9,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default memo(Header);
