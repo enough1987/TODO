@@ -26,6 +26,7 @@ const FormDatePicker = ({ sx, minDate, name, label, value, error, onChange }: IP
         () => ({
           textField: (params: TextFieldProps) => (
             <TextField
+                suppressHydrationWarning
                 role="datepicker"
                 error={error}
                 sx={{ opacity: pendingGlocal ? 0.5 : 1 }}
