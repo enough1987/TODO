@@ -14,11 +14,11 @@ type Metric = {
 }
 
 export function WebVitals() {
-useReportWebVitals((metric: Metric) => {
+  useReportWebVitals((metric: Metric) => {
     if(process.env.NODE_ENV === 'development' && metric.rating !== Rating.GOOD) {
-            console.info('METRIC : ', metric);
+        console.info('METRIC : ', metric);
     }
-})
+  })
 
   return <></>
 }
