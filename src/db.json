@@ -71,6 +71,14 @@
       "due_date": "2025-02-11T12:05:47.461Z",
       "completed": false,
       "created": "2025-02-11T12:05:52.609Z"
+    },
+    {
+      "id": "ff5d7afa-1814-4401-9e35-7e0d64ceacdb",
+      "name": "<script>alert(\"TEST\");</script>",
+      "priority": "low",
+      "due_date": "2025-02-13T15:54:00.311Z",
+      "completed": false,
+      "created": "2025-02-13T15:54:55.296Z"
     }
   ]
 }
