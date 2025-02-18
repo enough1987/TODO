@@ -80,5 +80,22 @@
       "completed": false,
       "created": "2025-02-13T15:54:55.296Z"
     }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "1@gmail.com",
+      "password": "1234567"
+    },
+    {
+      "id": "02815558-0eeb-45f3-8031-6b54df1b1e54",
+      "email": "tilgaaleksandr@gmail.com",
+      "password": "2323676767"
+    },
+    {
+      "id": "e659f303-51ea-4ade-b3e2-940679a18e2f",
+      "email": "tilgaaleksandr9@gmail.com",
+      "password": "2323676767"
+    }
   ]
 }

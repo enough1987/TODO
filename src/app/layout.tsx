@@ -2,11 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { StoreProvider } from "@/store/storeProvider";
 import { ToastContainer } from 'react-toastify';
-
-import "./globals.css";
 import LocalizeProvider from "@/components/localizeProvider";
 import Header from "@/components/header";
 import { WebVitals } from "@/components/webVitals";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -40,13 +39,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <WebVitals />
-        <LocalizeProvider>
-          <StoreProvider>
-            <Header />
-            {children}
-            <ToastContainer />
-          </StoreProvider>
-        </LocalizeProvider>
+          <LocalizeProvider>
+            <StoreProvider>
+              <Header />
+              {children}
+              <ToastContainer />
+            </StoreProvider>
+          </LocalizeProvider>
       </body>
     </html>
   );

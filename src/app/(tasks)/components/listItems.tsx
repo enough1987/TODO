@@ -8,7 +8,7 @@ import { DeleteTask } from './deleteTask';
 import { filter } from '../utils/filters';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import Box from '@mui/material/Box';
-import { useParamsList } from '@/utils/utils';
+import { useParamsList } from '@/utils/customHooks';
 
 const sortByCreated = (a: ITask, b: ITask) => (new Date(b.created)).getTime() - (new Date(a.created)).getTime();
 const sortByComleted = (a: ITask, b: ITask) => (a.completed === b.completed) ? 0 : (a.completed ? 1 : -1)

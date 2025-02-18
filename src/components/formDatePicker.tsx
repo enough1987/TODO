@@ -7,7 +7,6 @@ import { memo, useMemo, useState } from 'react';
 import { capitalizeFirstLetter } from '../utils/utils';
 import { SxProps } from '@mui/material';
 
-
 interface IProps {
     sx?: SxProps,
     name?: string,
@@ -45,22 +44,21 @@ const FormDatePicker = ({ sx, minDate, name, label, value, error, onChange }: IP
       );
 
     return (
-      <DatePicker 
-        
-        sx={{ width: '100%', ...sx }}
-        value={value ? value : null}
-        minDate={minDate ? minDate as Date : undefined}
-        disabled={!!pendingGlocal}
-        aria-label={label}
-        area-disabled={!!pendingGlocal ? 'true' : 'false'}
-        label={capitalizeFirstLetter(label)}
-        name={name || label}
-        open={open}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        onChange={onChange}
-        slots={slots}
-      />
+        <DatePicker
+          sx={{ width: '100%', ...sx }}
+          value={value ? value : null}
+          minDate={minDate ? minDate as Date : undefined}
+          disabled={!!pendingGlocal}
+          aria-label={label}
+          area-disabled={!!pendingGlocal ? 'true' : 'false'}
+          label={capitalizeFirstLetter(label)}
+          name={name || label}
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          onChange={onChange}
+          slots={slots}
+        />
     );
 };
 

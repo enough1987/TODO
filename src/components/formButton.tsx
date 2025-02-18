@@ -1,19 +1,19 @@
 'use client'
 
 import { useStoreInContext } from '@/store/storeProvider';
-import { SxProps } from '@mui/material';
 import Button from '@mui/material/Button';
+import { SxProps } from '@mui/material/styles';
 import { memo } from 'react';
 
 
 interface IProps {
     sx?: SxProps,
-    label: string, 
+    label: string,
     type?: 'submit' | 'button',
     onClick?: () => void,
 }
 
-const FormButton = ({ sx, label, type = 'button', onClick }: IProps) => {
+const FormButton = ({ sx, label, type, onClick}: IProps) => {
     const pendingGlocal = useStoreInContext((state) => state.pendingGlocal);
 
     return (
@@ -27,7 +27,7 @@ const FormButton = ({ sx, label, type = 'button', onClick }: IProps) => {
         area-disabled={!!pendingGlocal ? 'true' : 'false' }
         aria-busy={!!pendingGlocal}
         aria-label={label}
-        type={type}
+        type={type || 'button'} 
         size='medium'
         onClick={onClick}
       >

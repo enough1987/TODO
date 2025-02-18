@@ -4,7 +4,8 @@ export const BASE_API = 'http://localhost:8000';
 
 export interface IUser { 
     id: string;
-    name: string;
+    email: string;
+    password: string;
 }
 
 export interface ITask {
@@ -65,4 +66,16 @@ export const toastCofig = {
         theme: "light",
         transition: Bounce,
 }
+
+export const API_DELAY = 1000;
+
+
+export const INITIAL_AUTH: Omit<IUser, 'id'> = { email: '', password: '' };
+
+export interface IAuthState { 
+    data: Omit<IUser, 'password'> | null,
+    error: string | null
+}
+
+export const PUBLIC_ROUTES = ['/auth/login', '/auth/signup'];
 

@@ -15,7 +15,7 @@ type Metric = {
 
 export function WebVitals() {
   useReportWebVitals((metric: Metric) => {
-    if(process.env.NODE_ENV === 'development' && metric.rating !== Rating.GOOD) {
+    if(process.env.NODE_ENV === 'development' && metric.rating === Rating.POOR) {
         console.info('METRIC : ', metric);
     }
   })

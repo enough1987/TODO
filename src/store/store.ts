@@ -67,16 +67,10 @@ export const filters = persist<IFiltersState>(
                     setItem: (name: string, value: string) => searchParamsStorage.setItem(name, JSON.parse(value)),
                     removeItem: searchParamsStorage.removeItem,
                 }), {
-                    replacer: (key, value) => {
-                        if(key === 'filters') {
-                            console.log('replacer', key, value);
-                        }
+                    replacer: (_key, value) => {
                         return value;
                     },
-                    reviver: (key, value) => {
-                        if(key === 'filters') {
-                            console.log('reviver', key, value); 
-                        }
+                    reviver: (_key, value) => {
                         return value;
                     },
                 }),

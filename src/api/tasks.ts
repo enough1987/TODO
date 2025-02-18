@@ -1,15 +1,13 @@
 'use server'
 import { revalidateTag } from "next/cache";
-import { BASE_API, INITIAL_TASK, ITask, ITaskState, OmitedITask } from "./dictioneries";
+import { BASE_API, API_DELAY, INITIAL_TASK, ITask, ITaskState, OmitedITask } from "./dictioneries";
 import { v4 as uuidv4 } from 'uuid';
 import { ERROR_FEEDBACK_DATA, taskIdSchema, taskSchema } from "./validation";
 import { SafeParseReturnType } from "zod";
 
-const DELAY = 1000;
-
 export async function getAllTasksApi () {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, DELAY));
+    await new Promise(resolve => setTimeout(resolve, API_DELAY));
 
     const res: ITask[] = await fetch(`${BASE_API}/tasks`, { 
         cache: 'force-cache', 
@@ -24,14 +22,12 @@ export async function getAllTasksApi () {
 
 export async function addTaskApi (data: OmitedITask): Promise<ITaskState> {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, DELAY));
+    await new Promise(resolve => setTimeout(resolve, API_DELAY));
 
     const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
 
-    console.log('validated', validated);
-
     if (!validated.success) {
-        console.log('error', validated.error);
+        console.info('addTaskApi 1 error', validated.error);
         return { error: ERROR_FEEDBACK_DATA, data: null};
     }
 
@@ -64,13 +60,12 @@ export async function addTaskApi (data: OmitedITask): Promise<ITaskState> {
 
 export async function editTaskApi (data: ITask): Promise<ITaskState> {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, DELAY));
+    await new Promise(resolve => setTimeout(resolve, API_DELAY));
 
     const validated: SafeParseReturnType<OmitedITask, OmitedITask> = taskSchema.safeParse(data);
 
-    console.log('validated', validated);
-
     if (!validated.success) {
+        console.info('editTaskApi 1 error', validated.error);
         return { error: ERROR_FEEDBACK_DATA, data: null};
     }
 
@@ -103,12 +98,12 @@ export async function editTaskApi (data: ITask): Promise<ITaskState> {
 
 export async function completeTaskApi (task: ITask) {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, DELAY));
+    await new Promise(resolve => setTimeout(resolve, API_DELAY));
 
     const validated = taskSchema.safeParse(task);
 
     if (!validated.success) {
-        console.log('error', validated.error);
+        console.info('completeTaskApi 1 error', validated.error);
         return { error: ERROR_FEEDBACK_DATA, data: null };
     }
 
@@ -126,7 +121,7 @@ export async function completeTaskApi (task: ITask) {
             })
         }).then(res => res.json());
     } catch (error: unknown) {
-        console.log('error', error);
+        console.info('completeTaskApi 2 error', error);
         return { error: (error as Error).message, data: null };
     }
 
@@ -138,12 +133,12 @@ export async function completeTaskApi (task: ITask) {
 
 export async function deleteTaskApi (id: string) {
     // TODO: remove for prod
-    await new Promise(resolve => setTimeout(resolve, DELAY));
+    await new Promise(resolve => setTimeout(resolve, API_DELAY));
 
     const validated = taskIdSchema.safeParse(id);
 
     if (!validated.success) {
-        console.log('error', validated.error);
+        console.info('deleteTaskApi error', validated.error);
         return { error: ERROR_FEEDBACK_DATA, data: null };
     }
 
