@@ -18,10 +18,10 @@ interface ListItemsProps {
 }
 
 export function ListItems ({ items }: ListItemsProps) {
-    const params = useParamsList(FILTERS_NAMES) as unknown as IFilters;
+    const params = useParamsList(FILTERS_NAMES);
     
     const listItems = items
-          ?.filter((item) => filter(params, item ))
+          ?.filter((item) => filter(params as IFilters, item ))
           .sort(sortByCreated).sort(sortByComleted)
           .map((item) => <li key={item.id}
             role="listitem"

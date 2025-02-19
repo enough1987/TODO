@@ -1,4 +1,4 @@
-import { filterNames, IFilters, IUser } from '@/api/dictioneries';
+import { FilterNamesKeys, IFilters, IUser } from '@/api/dictioneries';
 import { create, StoreApi } from 'zustand'
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { searchParamsStorage } from './searchParamsStorage';
@@ -43,7 +43,7 @@ export const user = persist<IUserState>(
 
 export interface IFiltersState {
             filters: IFilters,
-            changeFilter: (key: filterNames, value: string) => void,
+            changeFilter: (key: FilterNamesKeys, value: string) => void,
             resetFilters: () => void,
 }
 
@@ -52,7 +52,7 @@ const initiaFiltersState = { } as IFilters;
 export const filters = persist<IFiltersState>(
             (set) => ({
                 filters: initiaFiltersState,
-                changeFilter: (key: filterNames, value: string) => set((state) => ({ filters: { ...state.filters, [key]: value } })),
+                changeFilter: (key: FilterNamesKeys, value: string) => set((state) => ({ filters: { ...state.filters, [key]: value } })),
                 resetFilters: () => set(() => {
                     return { filters: initiaFiltersState };
                 }),

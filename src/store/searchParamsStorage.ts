@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { filterNames, FILTERS_NAMES } from '@/api/dictioneries';
+import { FilterNamesKeys, FILTERS_NAMES } from '@/api/dictioneries';
 import { PersistStorage, StorageValue } from 'zustand/middleware/persist';
 import { IFiltersState } from './store';
 
@@ -15,7 +15,7 @@ export const searchParamsStorage: PersistStorage<IFiltersState> = {
   getItem: async (_name: string) => {
     const url = new URL(window.location.href)
 
-    const filters: { [key: filterNames]: string | null } = {};
+    const filters: { [key: FilterNamesKeys]: string | null } = {};
     FILTERS_NAMES.forEach((key) => {
       const value = url.searchParams.get(key);
       filters[key] = value || '';

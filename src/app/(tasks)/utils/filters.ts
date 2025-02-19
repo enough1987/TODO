@@ -1,7 +1,7 @@
-import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
+import { COMPLETNES, FilterNamesKeys, IFilters, ITask } from "@/api/dictioneries";
 
 
-    const filterSelectBoolean = (filters: IFilters, item: ITask, key: keyof ITask) => {
+    const filterSelectBoolean = <T>(filters: IFilters, item: T, key: keyof T & FilterNamesKeys) => {
         if (
             !filters?.[key] ||
             filters?.[key] === 'all' ||
@@ -13,7 +13,7 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         return false;
     }
 
-    const filterSelectString = (filters: IFilters, item: ITask, key: keyof ITask) => {
+    const filterSelectString = <T>(filters: IFilters, item: T, key: keyof T & FilterNamesKeys) => {
         if (
             !filters?.[key] ||
             filters?.[key] === 'all' ||
@@ -24,7 +24,7 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         return false;
     }
 
-    const filterInput = (filters: IFilters, item: ITask, key: keyof ITask) => {
+    const filterInput = <T>(filters: IFilters, item: T, key: keyof T & FilterNamesKeys) => {
         if (
             !filters?.[key] ||
             (item[key] as string)?.includes(filters[key] as string)
@@ -34,7 +34,7 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         return false;
     }
 
-    const filterDateFrom = (filters: IFilters, item: ITask, key: keyof ITask) => {
+    const filterDateFrom = <T>(filters: IFilters, item: T, key: keyof T & FilterNamesKeys) => {
         if (
             !filters?.from ||
             filters?.from < item[key]
@@ -44,7 +44,7 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         return false;
     }
 
-    const filterDateTo = (filters: IFilters, item: ITask, key: keyof ITask) => {
+    const filterDateTo = <T>(filters: IFilters, item: T, key: keyof T & FilterNamesKeys) => {
         if (
             !filters?.to ||
             filters?.to > item[key]
@@ -53,6 +53,9 @@ import { COMPLETNES, IFilters, ITask } from "@/api/dictioneries";
         }
         return false;
     }
+
+
+    
 
     export const filter = (filters: IFilters, item: ITask) => {
         if(filterSelectBoolean(filters, item, 'completed') 
