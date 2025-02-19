@@ -54,9 +54,6 @@ import { COMPLETNES, FilterNamesKeys, IFilters, ITask } from "@/api/dictioneries
         return false;
     }
 
-
-    
-
     export const filter = (filters: IFilters, item: ITask) => {
         if(filterSelectBoolean(filters, item, 'completed') 
           && filterSelectString(filters, item, 'priority')
